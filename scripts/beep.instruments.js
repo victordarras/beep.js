@@ -47,10 +47,10 @@ BEEP.Instrument = function(){
 
 	if( this.domContainer === undefined ) this.domContainer = document.createElement( 'div' )
 	this.domContainer.classList.add( 'instrument' )
-	
+
 
 	if( BEEP.domContainer ) BEEP.domContainer.appendChild( this.domContainer )
-	else document.body.appendChild( this.domContainer )	
+	else document.body.appendChild( this.domContainer )
 
 
 	//  What’s an Instrument without an interface?
@@ -72,7 +72,7 @@ BEEP.Instrument = function(){
 	this.domScorePlayPause.classList.add( 'score-play-pause' )
 	playPauseContainer.appendChild( this.domScorePlayPause )
 	this.domScorePlayPause.addEventListener( 'click', function(){ that.scoreToggle() })
-	this.domScorePlayPause.addEventListener( 'touchend', function( event ){ 
+	this.domScorePlayPause.addEventListener( 'touchend', function( event ){
 
 		that.scoreToggle()
 		event.preventDefault()
@@ -94,7 +94,7 @@ BEEP.Instrument = function(){
 
 		//  OMFG this is annoying.
 		//  We cannot reliably detect the ESCAPE key here
-		//  because of this problem in Chrome: 
+		//  because of this problem in Chrome:
 		//  https://github.com/philc/vimium/issues/499
 		//  Temporarily using SHIFT + ENTER key instead....
 
@@ -116,12 +116,12 @@ BEEP.Instrument = function(){
 		//  What are the bounds {X Y W H} of for each touch-move?
 		//  Does that intersect with bounds for any of our triggers?
 		//  @@  IN THE FUTURE WE’LL ADD EVENT.FORCE :)
-		
+
 		Array.prototype.slice.call( event.changedTouches ).forEach( function( touch ){
 
 			Object.keys( that.triggers ).forEach( function( triggerKey ){
-				
-				var 
+
+				var
 				trigger = that.triggers[ triggerKey ],
 				rect = trigger.domTrigger.getBoundingClientRect()
 
@@ -190,16 +190,16 @@ BEEP.Instrument.prototype.destroy = function(){
 
 
 //  Convenience method for calling new Trigger() that
-//  automagically attaches it to this Instrument. 
-//  You can of course build your own custom Triggers and 
+//  automagically attaches it to this Instrument.
+//  You can of course build your own custom Triggers and
 //  add them manually, give them a custom ID, and so on.
 
 BEEP.Instrument.prototype.newTrigger = function( note, triggerChars ){
 
 	var trigger
 
-	if( note instanceof BEEP.Note === false ) note = new BEEP.Note( note )	
-	
+	if( note instanceof BEEP.Note === false ) note = new BEEP.Note( note )
+
 
 	//  Here we’re going to assume if we intentionally sent a createVoices()
 	//  function to our Instrument then we’d like all Triggers to use it.
@@ -228,7 +228,7 @@ BEEP.Instrument.prototype.newTrigger = function( note, triggerChars ){
 }
 BEEP.Instrument.prototype.play = function( trigger ){
 
-	var 
+	var
 	triggersArray  = Object.keys( this.triggers ),
 	triggersMiddle = Math.floor( triggersArray.length / 2 )//  Middle C on our standard 2 octave build.
 
@@ -268,21 +268,21 @@ BEEP.Instrument.prototype.pause = function( trigger ){
 BEEP.Instrument.prototype.buildStandard = function(){
 
 	this.unbuild()
-	.newTrigger( '3C' , 'z' )
-	.newTrigger( '3C♯', 's' )
-	.newTrigger( '3D' , 'x' )
-	.newTrigger( '3E♭', 'd' )
-	.newTrigger( '3E' , 'c' )
-	.newTrigger( '3F' , 'v' )
-	.newTrigger( '3F♯', 'g' )
-	.newTrigger( '3G' , 'b' )
-	.newTrigger( '3A♭', 'h' )
-	.newTrigger( '3A' , 'n' )
-	.newTrigger( '3B♭', 'j' )
-	.newTrigger( '3B' , 'm' )
-	.newTrigger( '4C' , [ 'q', '<' ])
+	.newTrigger( '3C' , '<' )
+	.newTrigger( '3C♯', 'q' )
+	.newTrigger( '3D' , 'w' )
+	.newTrigger( '3E♭', 's' )
+	.newTrigger( '3E' , 'x' )
+	.newTrigger( '3F' , 'c' )
+	.newTrigger( '3F♯', 'f' )
+	.newTrigger( '3G' , 'v' )
+	.newTrigger( '3A♭', 'g' )
+	.newTrigger( '3A' , 'b' )
+	.newTrigger( '3B♭', 'h' )
+	.newTrigger( '3B' , 'n' )
+	.newTrigger( '4C' , 'a')
 	.newTrigger( '4C♯', '2' )
-	.newTrigger( '4D' , 'w' )
+	.newTrigger( '4D' , 'z' )
 	.newTrigger( '4E♭', '3' )
 	.newTrigger( '4E' , 'e' )
 	.newTrigger( '4F' , 'r' )
@@ -328,7 +328,7 @@ BEEP.Instrument.prototype.buildJustVsEDO12 = function(){
 	this.unbuild()
 	.newTrigger( '4C', '1' )
 	.newTrigger( '4D', '2' )
-	.newTrigger( '4A', '3' )	
+	.newTrigger( '4A', '3' )
 	.newTrigger( new BEEP.Note.JustIntonation( '4C', '4C' ), '7' )
 	.newTrigger( new BEEP.Note.JustIntonation( '4D', '4C' ), '8' )
 	.newTrigger( new BEEP.Note.JustIntonation( '4A', '4C' ), '9' )
@@ -513,8 +513,8 @@ BEEP.Instrument.prototype.scoreLoad = function( score ){
 		//  Check if this entry is overwriting a call to this same Trigger.
 		//  For example a previous entry at this very beat calls the Trigger
 		//  to engage, while this current entry calls it to disengage at the
-		//  exact same beat. We should nudge the call for engagement one 
-		//  loop into to the future!! 
+		//  exact same beat. We should nudge the call for engagement one
+		//  loop into to the future!!
 
 		beat += score[ i+0 ] || 0
 		this.scoreRemaining.push([ beat, note.octaveIndex + note.nameSimple, true  ])
@@ -528,7 +528,7 @@ BEEP.Instrument.prototype.scoreLoad = function( score ){
 }
 BEEP.Instrument.prototype.scorePlayLoop = function(){
 
-	var 
+	var
 	performant = window.performance && window.performance.now,
 	now = performant ? performance.now() : Date.now(),
 	delta = now - this.timePrevious
@@ -557,7 +557,7 @@ BEEP.Instrument.prototype.scorePlayLoop = function(){
 BEEP.Instrument.prototype.scorePlay = function(){
 
 	if( Object.keys( this.triggers ).length ){
-	
+
 		this.scoreIsPlaying = true
 		this.scorePlayLoop()
 		this.domScorePlayPause.classList.add( 'is-playing' )
@@ -598,7 +598,7 @@ BEEP.Instrument.prototype.scoreLoadDoReMi = function(){
 
 		36/4, '4C',  6/4,//  Do[e]
 		 6/4, '4D',  2/4,//  a
-		 2/4, '4E',  5/4,//  deer		
+		 2/4, '4E',  5/4,//  deer
 		 6/4, '4C',  2/4,//  A
 		 2/4, '4E',  4/4,//  fe
 		 4/4, '4C',  3/4,//  male
@@ -615,7 +615,7 @@ BEEP.Instrument.prototype.scoreLoadDoReMi = function(){
 		16/4, '4E',  6/4,//  Mi [Me]
 		 6/4, '4F',  2/4,//  a
 		 2/4, '4G',  5/4,//  name
-		 6/4, '4E',  2/4,//  I 
+		 6/4, '4E',  2/4,//  I
 		 2/4, '4G',  4/4,//  call
 		 4/4, '4E',  3/4,//  my
 		 4/4, '4G',  6/4,//  self
@@ -635,7 +635,7 @@ BEEP.Instrument.prototype.scoreLoadDoReMi = function(){
 		 2/4, '4F',  2/4,//  pull
 		 2/4, '4G',  2/4,//  ing
 		 2/4, '4A', 12/4,//  thread
-	
+
 		16/4, '4A',  6/4,//  La
 		 6/4, '4D',  2/4,//  a
 		 2/4, '4E',  2/4,//  note
@@ -681,7 +681,7 @@ BEEP.Instrument.prototype.scoreLoadDoReMi = function(){
 		 2/4, '3C',  4/4,
 	],
 	harmony = [
-	
+
 		4/4, '3C', 1/4,//  Intro measures...
 		4/4, '3G', 1/4,
 		4/4, '3C', 1/4,
@@ -725,7 +725,7 @@ BEEP.Instrument.prototype.scoreLoadDoReMi = function(){
 		4/4, '3F', 2/4,
 		4/4, '3D', 2/4,
 		4/4, '3F', 2/4,
-		4/4, '3D', 2/4,		
+		4/4, '3D', 2/4,
 		4/4, '3G', 2/4,
 		2/4, '3F', 2/4,
 		2/4, '3E', 2/4,
@@ -787,7 +787,7 @@ BEEP.Instrument.prototype.scoreLoadDoReMi = function(){
 		2/4, '3E', 2/4,//  notes
 		2/4, '3C', 2/4,//  to
 		2/4, '3D', 4/4,//  sing
-		
+
 		4/4, '3G', 2/4,//  you
 		2/4, '3C', 2/4,//  can
 		2/4, '3A', 2/4,//  sing
@@ -810,7 +810,7 @@ BEEP.Instrument.prototype.scoreLoadHSB = function(){
 		4/4, '4A♭', 3/4,
 		4/4, '4E♭', 3/4,
 	]
-	
+
 	this.scoreUnload()
 	this.scoreLoad( guitar )
 }
